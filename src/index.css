@@ -15,3 +15,7 @@
 body, #root {
   min-height: 100vh;
 }
+
+.border-2 {
+  border-color: var(--color-teal-600);
+}

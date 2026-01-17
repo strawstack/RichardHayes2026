@@ -39,7 +39,7 @@ function App() {
             onClick: () => { setExpand(!expand) }
         });
         return (
-            <div className='flex flex-col p-4 gap-y-4 border-2'>
+            <div className='flex flex-col p-4 gap-y-4 border-2 items-center'>
                 {clone}
                 {expand && details}
             </div>
