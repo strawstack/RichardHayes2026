@@ -19,13 +19,13 @@ const text = {
 
 const SqImg = () => {
     return (
-        <div className='w-[128px] bg-gray-400'></div>
+        <div className='w-[128px] h-[128px] bg-slate-400'></div>
     );
 };
 
 const FullImg = () => {
     return (
-        <div className='h-[128px] bg-gray-400'>
+        <div className='h-[128px] bg-slate-400'>
             {/* <img src={i568x128}></img> */}
         </div>
     );
@@ -39,7 +39,7 @@ function App() {
             onClick: () => { setExpand(!expand) }
         });
         return (
-            <div className='flex flex-col p-4 gap-y-4 border-2 items-center'>
+            <div className='flex flex-col p-4 gap-y-4 border-4 items-center'>
                 {clone}
                 {expand && details}
             </div>
@@ -52,19 +52,19 @@ function App() {
 
                 <FullImg />
 
-                <div className='p-4 border-2'>
+                <div className='p-4 border-l-4'>
                     <div className=''>{text.intro}</div>
                 </div>
 
                 <div className='grid grid-cols-[1fr_auto] gap-x-2'>
-                    <div className='flex flex-col gap-y-2 p-4 border-t-2 border-b-2 border-l-2'>
+                    <div className='flex flex-col gap-y-2 p-4'>
                         <div className='flex justify-between'>
                             <div className='flex gap-x-2 items-center'>
                                 <div className='text-4xl'>Games</div>
                             </div>
                             <div className='flex gap-x-2 items-center'>
-                                <FontAwesomeIcon icon={["fas", "gamepad"]} size="lg" />
-                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "gamepad"]} size="xl" />
+                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="xl" />
                             </div>
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
@@ -73,11 +73,11 @@ function App() {
                 </div>
 
                 <div>
-                    <div className='flex flex-col gap-y-2 p-4'>
+                    <div className='flex flex-col gap-y-2 p-4 border-l-4'>
                         <div className='flex gap-x-2 items-center'>
-                            <FontAwesomeIcon icon={["fas", "splotch"]} size="lg" />
+                            <FontAwesomeIcon icon={["fas", "splotch"]} size="xl" />
                             <div className='text-4xl'>Projects</div>
-                            <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="lg" />
+                            <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="xl" />
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
                     </div>
@@ -85,14 +85,14 @@ function App() {
 
                 <div className='grid grid-cols-[auto_1fr] gap-x-2'>
                     <SqImg />
-                    <div className='flex flex-col gap-y-2 p-4 border-t-2 border-r-2 border-b-2'>
+                    <div className='flex flex-col gap-y-2 p-4 border-t-4'>
                         <div className='flex justify-between'>
                             <div className='flex gap-x-2 items-center'>
                                 <div className='text-4xl'>Videos</div>
-                                <FontAwesomeIcon icon={["fas", "video"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "video"]} size="xl" />
                             </div>
                             <div className='flex gap-x-2 items-center'>
-                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="xl" />
                             </div>
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
@@ -100,14 +100,14 @@ function App() {
                 </div>
 
                 <div>
-                    <div className='flex flex-col gap-y-2 p-4 border-l-2 border-r-2'>
+                    <div className='flex flex-col gap-y-2 p-4 border-l-4 border-r-4'>
                         <div className='flex justify-between'>
                             <div className='flex gap-x-2 items-center'>
                                 <div className='text-4xl'>Music</div>
                             </div>
                             <div className='flex gap-x-2 items-center'>
-                                <FontAwesomeIcon icon={["fas", "microphone"]} size="lg" />
-                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "microphone"]} size="xl" />
+                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="xl" />
                             </div>
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
@@ -117,36 +117,52 @@ function App() {
                 <FullImg />
 
                 <div>
-                    <div className='flex flex-col gap-y-2 p-4 border-t-2 border-b-2'>
+                    <div className='flex flex-col gap-y-2 p-4 border-r-4'>
                         <div className='flex justify-between'>
                             <div className='flex gap-x-2 items-center'>
-                                <FontAwesomeIcon icon={["fas", "podcast"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "podcast"]} size="xl" />
                                 <div className='text-4xl'>Podcast</div>
                             </div>
                             <div className='flex gap-x-2 items-center'>
-                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="lg" />
+                                <FontAwesomeIcon icon={["fas", "up-right-from-square"]} size="xl" />
                             </div>
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
                     </div>
                 </div>
 
-                <FullImg />
+                <div className='grid grid-cols-[auto_1fr] gap-x-2'>
+                    <SqImg />
+                    <div className='flex justify-center p-4 gap-x-8'>
+                        <div className='border-4 rounded-full p-2 flex items-center'>
+                            <FontAwesomeIcon icon={["fab", "youtube"]} size="2xl" />
+                        </div>
+                        <div className='border-4 rounded-full p-2 flex items-center'>
+                            <FontAwesomeIcon icon={["fab", "itch-io"]} size="2xl" />
+                        </div>
+                        <div className='border-4 rounded-full p-2 flex items-center'>
+                            <FontAwesomeIcon icon={["fab", "github-alt"]} size="2xl" />
+                        </div>
+                        <div className='border-4 rounded-full p-2 flex items-center'>
+                            <FontAwesomeIcon icon={["fab", "linkedin-in"]} size="2xl" />
+                        </div>
+                    </div>                    
+                </div>
 
                 <div>
-                    <div className='flex flex-col gap-y-2 p-4 border-2'>
+                    <div className='flex flex-col gap-y-2 p-4 border-t-4'>
                         <div className='flex gap-x-2 items-center'>
-                            <FontAwesomeIcon icon={["fas", "computer-mouse"]} size="lg" />
+                            <FontAwesomeIcon icon={["fas", "computer-mouse"]} size="xl" />
                             <div className='text-4xl'>Interactive Things</div>
-                            <FontAwesomeIcon icon={["fas", "arrow-turn-down"]} size="lg" />
+                            <FontAwesomeIcon icon={["fas", "arrow-turn-down"]} size="xl" />
                         </div>
                         <div className=''>This is the description of games. I talk about what my idea is with games.</div>
                     </div>
                 </div>
 
                 <Details
-                    open={<FontAwesomeIcon icon={["fas", "chevron-down"]} size="lg" />}
-                    close={<FontAwesomeIcon icon={["fas", "chevron-right"]} size="lg" />}
+                    open={<FontAwesomeIcon icon={["fas", "chevron-down"]} size="xl" />}
+                    close={<FontAwesomeIcon icon={["fas", "chevron-right"]} size="xl" />}
                     summary={
                         (icon: JSX.Element) => { return (
                             <div className='grid grid-cols-[1fr_auto] gap-x-2'>
@@ -166,23 +182,6 @@ function App() {
                         >Game Area</div>
                     }
                 />
-
-                <div className='flex justify-center p-4 gap-x-8'>
-                    <div className='border-2 rounded-full p-4'>
-                        <FontAwesomeIcon icon={["fas", "gamepad"]} size="lg" />
-                    </div>
-                    <div className='border-2 rounded-full p-4'>
-                        <FontAwesomeIcon icon={["fas", "gamepad"]} size="lg" />
-                    </div>
-                    <div className='border-2 rounded-full p-4'>
-                        <FontAwesomeIcon icon={["fas", "gamepad"]} size="lg" />
-                    </div>
-                    <div className='border-2 rounded-full p-4'>
-                        <FontAwesomeIcon icon={["fas", "gamepad"]} size="lg" />
-                    </div>
-                </div>
-
-                <FullImg />
                 
                 <FullImg />
                 
