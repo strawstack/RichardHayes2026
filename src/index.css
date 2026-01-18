@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -28,14 +28,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body, #root {
+body,
+#root {
   min-height: 100vh;
-}
-
-div[class*="border-"] {
-  border-color: var(--color-slate-300);
-}
-
-svg[data-icon] {
-  color: var(--color-fuchsia-600);
 }
