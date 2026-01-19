@@ -10,18 +10,12 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { cloneElement, useState, type JSX } from "react";
-import cn from "classnames";
 
 library.add(fas, far, fab);
 
 type Props = {
   children?: JSX.Element | JSX.Element[] | string;
   [key: string]: any;
-};
-
-const text = {
-  intro:
-    "Hey, I’m Richard. This is something something a description or explanation about  who I am and what you’ll find on this site",
 };
 
 const SqImg = () => {
@@ -35,6 +29,23 @@ const FullImg = () => {
 };
 
 function App() {
+  const text = {
+    intro:
+      "I’m Richard. Below, you'll find games, project, videos, and (suprizingly) hip-hip songs I've created. Once a week, I record a casual podcast with a friend about Indie Game Dev.",
+    games:
+      "A collection of indie games I've made for jams, personal projects, and self-expression.",
+    projects:
+      "Various tools, puzzles, and prototypes. Often browser based with React or VanillaJS.",
+    videos:
+      "Abstract slice of life videos - sometimes tutorials - more often aspiring absurdist non-fiction.",
+    music:
+      "Against all odds, I make drill/hip-hop–style songs about video games, coding competitions, MinnMax, and more.",
+    gameDevInProcess:
+      "A conversational podcast where two game devs - and sometimes a guest - talk about life and games.",
+  };
+
+  const [isRunning, setIsRunning] = useState(false);
+
   function Details({ open, close, summary, details }: Props) {
     const [expand, setExpand] = useState(false);
     const clone = cloneElement(summary(expand ? open : close), {
@@ -103,69 +114,76 @@ function App() {
 
   return (
     <div className="min-h-screen flex justify-center">
-      <div className="max-w-150 flex grow bg-gray-50 py-16 px-4 flex-col gap-y-4">
+      <div className="max-w-150 flex grow bg-gray-50 py-16 px-4 flex-col gap-y-8">
         <FullImg />
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
-          <div className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20">
-            <Icon type={["fas", "person-running"]} size="3x" />
+          <div
+            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20"
+            onMouseOver={() => setIsRunning(true)}
+            onMouseOut={() => setIsRunning(false)}
+          >
+            <Icon
+              type={
+                isRunning
+                  ? ["fas", "person-running"]
+                  : ["fas", "person-walking"]
+              }
+              size="3x"
+            />
           </div>
           <div className="p-4 border-l-4">
             <div className="text-slate-500 font-medium">{text.intro}</div>
           </div>
         </div>
 
-        <div className="grid grid-cols-[1fr_auto] gap-x-2">
+        <FullImg />
+
+        <div>
           <ProjectCard
-            className="hover:bg-green-200 hover:border-green-200"
+            className="hover:bg-slate-200 hover:border-slate-200"
             title="Games"
             icon={<Icon type={["fas", "gamepad"]} size="xl" />}
-            description={
-              "This is the description of games. I talk about what my idea is with games."
-            }
+            description={text.games}
+          />
+        </div>
+
+        <div className="grid grid-cols-[1fr_auto] gap-x-2">
+          <ProjectCard
+            className="border-l-4 hover:bg-slate-200 hover:border-slate-200"
+            title="Projects"
+            icon={<Icon type={["fas", "splotch"]} size="xl" />}
+            description={text.projects}
           />
           <SqImg />
         </div>
 
-        <ProjectCard
-          className="border-l-4 hover:bg-orange-200 hover:border-orange-200"
-          title="Projects"
-          icon={<Icon type={["fas", "splotch"]} size="xl" />}
-          description={
-            "This is the description of games. I talk about what my idea is with games."
-          }
-        />
+        <FullImg />
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
           <SqImg />
           <ProjectCard
-            className="border-r-4 hover:bg-indigo-200 hover:border-indigo-200"
+            className="border-r-4 hover:bg-slate-200 hover:border-slate-200"
             title="Videos"
             icon={<Icon type={["fas", "video"]} size="xl" />}
-            description={
-              "Abstract slice of life videos - sometimes tutorials - more often aspiring absurdist non-fiction."
-            }
+            description={text.videos}
           />
         </div>
 
         <ProjectCard
-          className="hover:bg-zinc-200 hover:border-zinc-200"
+          className="hover:bg-slate-200 hover:border-slate-200"
           title="Music"
           icon={<Icon type={["fas", "microphone"]} size="xl" />}
-          description={
-            "Against all odds I make drill/hip-hop style songs about video games, coding competitions, and MinnMax."
-          }
+          description={text.music}
         />
 
         <FullImg />
 
         <ProjectCard
-          className="border-l-4 border-r-4 border-b-4 hover:bg-red-200 hover:border-red-200"
+          className="border-l-4 border-r-4 hover:bg-slate-200 hover:border-slate-200"
           title="Game Dev In Process"
           icon={<Icon type={["fas", "podcast"]} size="xl" />}
-          description={
-            "A conversational podcast where two game devs - and sometimes a guest - talk about life and games."
-          }
+          description={text.gameDevInProcess}
         />
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
