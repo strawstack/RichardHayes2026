@@ -102,7 +102,9 @@ function App() {
   }) {
     const { title, icon, description } = props;
     return (
-      <div className={`flex flex-col gap-y-2 p-4 cursor-pointer ${className}`}>
+      <div
+        className={`flex flex-col gap-y-2 p-4 cursor-pointer hover:bg-gray-200 ${className}`}
+      >
         <div className="flex justify-between">
           <div className="flex gap-x-2 items-center text-teal-800">
             {icon}
@@ -146,7 +148,6 @@ function App() {
 
         <div>
           <ProjectCard
-            className="hover:bg-slate-200 hover:border-slate-200"
             title="Games"
             icon={<Icon type={["fas", "gamepad"]} size="xl" />}
             description={text.games}
@@ -155,7 +156,7 @@ function App() {
 
         <div className="grid grid-cols-[1fr_auto] gap-x-2">
           <ProjectCard
-            className="border-l-4 hover:bg-slate-200 hover:border-slate-200"
+            className="border-l-4"
             title="Projects"
             icon={<Icon type={["fas", "splotch"]} size="xl" />}
             description={text.projects}
@@ -168,7 +169,7 @@ function App() {
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
           <SqImg />
           <ProjectCard
-            className="border-r-4 hover:bg-slate-200 hover:border-slate-200"
+            className="border-r-4"
             title="Videos"
             icon={<Icon type={["fas", "video"]} size="xl" />}
             description={text.videos}
@@ -176,7 +177,6 @@ function App() {
         </div>
 
         <ProjectCard
-          className="hover:bg-slate-200 hover:border-slate-200"
           title="Music"
           icon={<Icon type={["fas", "microphone"]} size="xl" />}
           description={text.music}
@@ -185,7 +185,7 @@ function App() {
         <FullImg />
 
         <ProjectCard
-          className="border-l-4 border-r-4 hover:bg-slate-200 hover:border-slate-200"
+          className="border-l-4 border-r-4"
           title="Game Dev In Process"
           icon={<Icon type={["fas", "podcast"]} size="xl" />}
           description={text.gameDevInProcess}
