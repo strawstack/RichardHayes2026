@@ -1,5 +1,4 @@
 import "./App.css";
-import i568x128 from "./images/568x128.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   library,
@@ -19,12 +18,18 @@ type Props = {
 };
 
 const SqImg = () => {
-  return <div className="w-32 h-32 bg-slate-400"></div>;
+  return (
+    <div className="w-32 h-32 flex">
+      <div className="bg-gray-100 w-full h-full border-4"></div>
+    </div>
+  );
 };
 
-const FullImg = () => {
+const FullImg = ({ img }: { img?: string }) => {
   return (
-    <div className="h-32 bg-slate-400">{/* <img src={i568x128}></img> */}</div>
+    <div className={`h-32 flex`}>
+      <div className="bg-gray-100 w-full h-full border-4"></div>
+    </div>
   );
 };
 
