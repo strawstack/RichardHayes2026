@@ -110,7 +110,7 @@ function App() {
             {icon}
             <div className="text-4xl text-slate-800">{title}</div>
           </div>
-          <div className="flex gap-x-2 items-center text-teal-800/10">
+          <div className="flex gap-x-2 items-center text-teal-800/20">
             <Icon type={["fas", "up-right-from-square"]} size="xl" />
           </div>
         </div>
@@ -126,7 +126,7 @@ function App() {
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
           <div
-            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20 "
+            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20"
             onMouseOver={() => setIsRunning(true)}
             onMouseOut={() => setIsRunning(false)}
           >
