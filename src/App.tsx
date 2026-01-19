@@ -119,7 +119,7 @@ function App() {
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
           <div
-            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20"
+            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20 "
             onMouseOver={() => setIsRunning(true)}
             onMouseOut={() => setIsRunning(false)}
           >
@@ -132,7 +132,7 @@ function App() {
               size="3x"
             />
           </div>
-          <div className="p-4 border-l-4">
+          <div className="p-4 border-r-4 border-teal-800/20">
             <div className="text-slate-500 font-medium">{text.intro}</div>
           </div>
         </div>
@@ -190,17 +190,17 @@ function App() {
           <SqImg />
           <div className="flex justify-center p-4 gap-x-8">
             <IconChip
-              className="hover:bg-indigo-200 hover:border-indigo-200"
+              className="hover:bg-gray-200 hover:border-gray-200"
               type={["fab", "youtube"]}
               size="2xl"
             ></IconChip>
             <IconChip
-              className="hover:bg-green-200 hover:border-green-200"
+              className="hover:bg-gray-200 hover:border-gray-200"
               type={["fab", "itch-io"]}
               size="2xl"
             ></IconChip>
             <IconChip
-              className="hover:bg-orange-200 hover:border-orange-200"
+              className="hover:bg-gray-200 hover:border-gray-200"
               type={["fab", "github-alt"]}
               size="2xl"
             ></IconChip>
@@ -211,6 +211,8 @@ function App() {
             ></IconChip>
           </div>
         </div>
+
+        <FullImg />
 
         <div>
           <div className="flex flex-col gap-y-2 p-4">
@@ -254,8 +256,6 @@ function App() {
             </div>
           }
         />
-
-        <FullImg />
 
         <FullImg />
       </div>
