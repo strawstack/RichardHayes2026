@@ -19,7 +19,7 @@ type Props = {
 
 const SqImg = () => {
   return (
-    <div className="w-32 h-32 flex">
+    <div className="w-32 h-32 flex hidden sm:inline-block">
       <div className="bg-gray-100 w-full h-full border-4"></div>
     </div>
   );
@@ -27,8 +27,8 @@ const SqImg = () => {
 
 const FullImg = ({ img }: { img?: string }) => {
   return (
-    <div className={`h-32 flex`}>
-      <div className="bg-gray-100 w-full h-full border-4"></div>
+    <div className="h-32">
+      <div className="h-full border-4 bg-gray-100"></div>
     </div>
   );
 };
@@ -59,7 +59,7 @@ function App() {
       },
     });
     return (
-      <div className="flex flex-col p-4 gap-y-4 border-l-4 border-r-4 items-center hover:bg-gray-200 cursor-pointer">
+      <div className="hidden sm:flex flex-col p-4 gap-y-4 border-l-4 border-r-4 items-center hover:bg-gray-200 cursor-pointer">
         {clone}
         {expand && details}
       </div>
@@ -120,26 +120,28 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center">
-      <div className="max-w-150 flex grow bg-gray-50 py-16 px-4 flex-col gap-y-8">
+    <div className="flex justify-center">
+      <div className="max-w-150 grow min-w-0 flex flex-col px-4 py-16 bg-gray-50 gap-y-8">
         <FullImg />
 
-        <div className="grid grid-cols-[auto_1fr] gap-x-2">
-          <div
-            className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20"
-            onMouseOver={() => setIsRunning(true)}
-            onMouseOut={() => setIsRunning(false)}
-          >
-            <Icon
-              type={
-                isRunning
-                  ? ["fas", "person-running"]
-                  : ["fas", "person-walking"]
-              }
-              size="3x"
-            />
+        <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
+          <div className="flex justify-center">
+            <div
+              className="w-32 h-32 flex justify-center items-center text-teal-800 bg-teal-800/20"
+              onMouseOver={() => setIsRunning(true)}
+              onMouseOut={() => setIsRunning(false)}
+            >
+              <Icon
+                type={
+                  isRunning
+                    ? ["fas", "person-running"]
+                    : ["fas", "person-walking"]
+                }
+                size="3x"
+              />
+            </div>
           </div>
-          <div className="p-4 border-r-4 border-teal-800/20">
+          <div className="p-4 border-l-4 sm:border-l-0 border-r-4 border-teal-800/20">
             <div className="text-slate-500 font-medium">{text.intro}</div>
           </div>
         </div>
@@ -185,15 +187,15 @@ function App() {
         <FullImg />
 
         <ProjectCard
-          className="border-l-4 border-r-4"
+          className="border-l-0 border-r-0 sm:border-l-4 sm:border-r-4"
           title="Game Dev In Process"
           icon={<Icon type={["fas", "podcast"]} size="xl" />}
           description={text.gameDevInProcess}
         />
 
-        <div className="grid grid-cols-[auto_1fr] gap-x-2">
+        <div className="grid grid-cols-[1fr] sm:grid-cols-[auto_1fr] gap-x-2">
           <SqImg />
-          <div className="flex justify-center p-4 gap-x-8">
+          <div className="flex justify-evenly">
             <IconChip
               className="hover:bg-gray-200 hover:border-gray-200"
               type={["fab", "youtube"]}
@@ -219,7 +221,7 @@ function App() {
 
         <FullImg />
 
-        <div>
+        <div className="hidden sm:inline-block">
           <div className="flex flex-col gap-y-2 p-4">
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={["fas", "computer-mouse"]} size="xl" />
