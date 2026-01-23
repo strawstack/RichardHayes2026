@@ -9,6 +9,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { cloneElement, useState, type JSX } from "react";
+import { Water } from "./components/water";
 
 library.add(fas, far, fab);
 
@@ -19,8 +20,16 @@ type Props = {
 
 const SqImg = () => {
   return (
-    <div className="w-32 h-32 flex hidden sm:inline-block">
+    <div className="w-32 h-32 hidden sm:inline-block">
       <div className="bg-gray-100 w-full h-full border-4"></div>
+    </div>
+  );
+};
+
+const Row = ({ children }: { children: JSX.Element }) => {
+  return (
+    <div className="h-32">
+      <div className="h-full border-4">{children}</div>
     </div>
   );
 };
@@ -122,7 +131,9 @@ function App() {
   return (
     <div className="flex justify-center">
       <div className="max-w-150 grow min-w-0 flex flex-col px-4 py-16 bg-gray-50 gap-y-8">
-        <FullImg />
+        <Row>
+          <Water></Water>
+        </Row>
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
           <div className="flex justify-center">
