@@ -1,24 +1,16 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Pair = [number, number];
 
-const blueFill = [
-  "fill-blue-200",
-  "fill-blue-300",
-  "fill-blue-400",
-  "fill-blue-500",
-  "fill-blue-600",
-  "fill-blue-700",
-  "fill-blue-800",
-  "fill-blue-900",
-];
+const colorFill = ["fill-emerald-200", "fill-emerald-300", "fill-emerald-400"];
 
 function Triangle({ path }: { path: Pair[] }) {
-  const rand = useMemo(() => Math.floor(Math.random() * 8), []);
-  const pulse = rand < 4 ? "animate-pulse" : "";
+  const rand = useMemo(() => Math.floor(Math.random() * colorFill.length), []);
+  const flip = useMemo(() => Math.random() < 0.6, []);
+  const pulse = flip ? "animate-pulse" : "";
   return (
     <path
-      className={`${blueFill[rand]} ${pulse}`}
+      className={`${colorFill[rand]} ${pulse}`}
       d={`M ${path[0].join(" ")} L ${path[1].join(" ")} L ${path[2].join(" ")} Z`}
     />
   );
@@ -39,11 +31,12 @@ function triPath({ x, y }: { x: number; y: number }, upward: boolean): Pair[] {
 }
 
 export function Water() {
-  const ROWS = 8;
+  const ROWS = 12;
   const COLS = 29;
   const SPACE = 20;
 
-  const points = [];
+  const [offsetY, setOffsetY] = useState(0);
+
   const triangles = [];
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
@@ -53,10 +46,26 @@ export function Water() {
         x: x * SPACE + d,
         y: y * SPACE,
       };
-      triangles.push(<Triangle path={triPath(p, true)} />);
-      triangles.push(<Triangle path={triPath(p, false)} />);
+      triangles.push(
+        <Triangle key={`${y}:${x}:${0}`} path={triPath(p, true)} />,
+      );
+      triangles.push(
+        <Triangle key={`${y}:${x}:${1}`} path={triPath(p, false)} />,
+      );
     }
   }
+
+  function handleScroll() {
+    setOffsetY(window.scrollY / 8);
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <svg
@@ -64,7 +73,7 @@ export function Water() {
       xmlns="http://www.w3.org/2000/svg"
       shapeRendering="crispEdges"
     >
-      {triangles}
+      <g transform={`translate(0 ${-1 * offsetY})`}>{triangles}</g>
     </svg>
   );
 }

@@ -130,10 +130,8 @@ function App() {
 
   return (
     <div className="flex justify-center">
-      <div className="max-w-150 grow min-w-0 flex flex-col px-4 py-16 bg-gray-50 gap-y-8">
-        <Row>
-          <Water></Water>
-        </Row>
+      <div className="max-w-150 grow min-w-0 flex flex-col p-4 bg-gray-50 gap-y-8">
+        <FullImg />
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
           <div className="flex justify-center">
@@ -157,7 +155,9 @@ function App() {
           </div>
         </div>
 
-        <FullImg />
+        <Row>
+          <Water></Water>
+        </Row>
 
         <div>
           <ProjectCard
