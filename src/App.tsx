@@ -10,6 +10,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { cloneElement, useState, type JSX } from "react";
 import { Water } from "./components/water";
+import { Background } from "./components/background";
 
 library.add(fas, far, fab);
 
@@ -42,95 +43,90 @@ const FullImg = ({ img }: { img?: string }) => {
   );
 };
 
-function App() {
-  const text = {
-    intro:
-      "I’m Richard. Below, you'll find games, project, videos, and (suprizingly) hip-hip songs I've created. Once a week, I record a casual podcast with a friend about Indie Game Dev.",
-    games:
-      "A collection of indie games I've made for jams, personal projects, and self-expression.",
-    projects:
-      "Various tools, puzzles, and prototypes. Often browser based with React or VanillaJS.",
-    videos:
-      "Abstract slice of life videos - sometimes tutorials - more often aspiring absurdist non-fiction.",
-    music:
-      "Against all odds, I make drill/hip-hop–style songs about video games, coding competitions, MinnMax, and more.",
-    gameDevInProcess:
-      "A conversational podcast where two game devs - and sometimes a guest - talk about life and games.",
-  };
+const text = {
+  intro:
+    "I’m Richard. Below, you'll find games, project, videos, and (suprizingly) hip-hip songs I've created. Once a week, I record a casual podcast with a friend about Indie Game Dev.",
+  games:
+    "A collection of indie games I've made for jams, personal projects, and self-expression.",
+  projects:
+    "Various tools, puzzles, and prototypes. Often browser based with React or VanillaJS.",
+  videos:
+    "Abstract slice of life videos - sometimes tutorials - more often aspiring absurdist non-fiction.",
+  music:
+    "Against all odds, I make drill/hip-hop–style songs about video games, coding competitions, MinnMax, and more.",
+  gameDevInProcess:
+    "A conversational podcast where two game devs - and sometimes a guest - talk about life and games.",
+};
 
+function Icon({ type, size }: { type: IconProp; size: SizeProp | undefined }) {
+  return <FontAwesomeIcon icon={type} size={size} />;
+}
+
+function IconChip({
+  className,
+  ...props
+}: {
+  className: string;
+  [key: string]: any;
+}) {
+  const { type, size } = props;
+  return (
+    <div
+      className={`border-4 rounded-full p-2 flex items-center cursor-pointer ${className}`}
+    >
+      <Icon type={type} size={size} />
+    </div>
+  );
+}
+
+function ProjectCard({
+  className,
+  ...props
+}: {
+  className?: string;
+  [key: string]: any;
+}) {
+  const { title, icon, description } = props;
+  return (
+    <div
+      className={`flex flex-col gap-y-2 p-4 cursor-pointer hover:bg-gray-200 ${className}`}
+    >
+      <div className="flex justify-between">
+        <div className="flex gap-x-2 items-center text-teal-800">
+          {icon}
+          <div className="text-4xl text-slate-800">{title}</div>
+        </div>
+        <div className="flex gap-x-2 items-center text-teal-800/20">
+          <Icon type={["fas", "up-right-from-square"]} size="xl" />
+        </div>
+      </div>
+      <div className="text-slate-500 font-medium">{description}</div>
+    </div>
+  );
+}
+
+function Details({ open, close, summary, details }: Props) {
+  const [expand, setExpand] = useState(false);
+  const clone = cloneElement(summary(expand ? open : close), {
+    onClick: () => {
+      setExpand(!expand);
+    },
+  });
+  return (
+    <div className="hidden sm:flex flex-col p-4 gap-y-4 border-l-4 border-r-4 items-center hover:bg-gray-200 cursor-pointer">
+      {clone}
+      {expand && details}
+    </div>
+  );
+}
+
+function App() {
   const [isRunning, setIsRunning] = useState(false);
 
-  function Details({ open, close, summary, details }: Props) {
-    const [expand, setExpand] = useState(false);
-    const clone = cloneElement(summary(expand ? open : close), {
-      onClick: () => {
-        setExpand(!expand);
-      },
-    });
-    return (
-      <div className="hidden sm:flex flex-col p-4 gap-y-4 border-l-4 border-r-4 items-center hover:bg-gray-200 cursor-pointer">
-        {clone}
-        {expand && details}
-      </div>
-    );
-  }
-
-  function Icon({
-    type,
-    size,
-  }: {
-    type: IconProp;
-    size: SizeProp | undefined;
-  }) {
-    return <FontAwesomeIcon icon={type} size={size} />;
-  }
-
-  function IconChip({
-    className,
-    ...props
-  }: {
-    className: string;
-    [key: string]: any;
-  }) {
-    const { type, size } = props;
-    return (
-      <div
-        className={`border-4 rounded-full p-2 flex items-center cursor-pointer ${className}`}
-      >
-        <Icon type={type} size={size} />
-      </div>
-    );
-  }
-
-  function ProjectCard({
-    className,
-    ...props
-  }: {
-    className?: string;
-    [key: string]: any;
-  }) {
-    const { title, icon, description } = props;
-    return (
-      <div
-        className={`flex flex-col gap-y-2 p-4 cursor-pointer hover:bg-gray-200 ${className}`}
-      >
-        <div className="flex justify-between">
-          <div className="flex gap-x-2 items-center text-teal-800">
-            {icon}
-            <div className="text-4xl text-slate-800">{title}</div>
-          </div>
-          <div className="flex gap-x-2 items-center text-teal-800/20">
-            <Icon type={["fas", "up-right-from-square"]} size="xl" />
-          </div>
-        </div>
-        <div className="text-slate-500 font-medium">{description}</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex justify-center">
-      <div className="max-w-150 grow min-w-0 flex flex-col p-4 bg-gray-50 gap-y-8">
+    <div className="flex justify-center relative">
+      <Background></Background>
+      <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8">
         <FullImg />
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">

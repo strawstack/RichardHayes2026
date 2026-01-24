@@ -56,7 +56,7 @@ export function Water() {
   }
 
   function handleScroll() {
-    setOffsetY(window.scrollY / 8);
+    setOffsetY(window.scrollY / 12);
   }
 
   useEffect(() => {
