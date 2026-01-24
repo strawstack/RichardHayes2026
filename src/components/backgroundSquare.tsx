@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 const colorFill = ["fill-emerald-50", "fill-emerald-100", "fill-emerald-300"];
 const hexFill = ["#ecfdf5", "#d1fae5", "#a7f3d0"];
 
-export function Background() {
+export function BackgroundSquare() {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   function renderCanvas(canvas: HTMLCanvasElement) {
@@ -12,7 +12,7 @@ export function Background() {
     canvas.height = height;
     canvas.width = width;
 
-    const cols = 50;
+    const cols = 40;
     const size = width / cols;
     const rows = Math.ceil(height / size);
 

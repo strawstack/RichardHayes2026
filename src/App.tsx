@@ -10,7 +10,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { cloneElement, useState, type JSX } from "react";
 import { Water } from "./components/water";
-import { Background } from "./components/background";
+import { BackgroundCanvas } from "./components/BackgroundCanvas";
 
 library.add(fas, far, fab);
 
@@ -125,7 +125,12 @@ function App() {
 
   return (
     <div className="flex justify-center relative">
-      <Background></Background>
+      <BackgroundCanvas
+        draw={({ canvas, ctx, delta }) => {
+          console.log(ctx);
+        }}
+        isAnimated={false}
+      ></BackgroundCanvas>
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8">
         <FullImg />
 
