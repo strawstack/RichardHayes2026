@@ -33,6 +33,8 @@ export function BackgroundCanvas({
     (delta) => {
       if (canvas.current && size && ctx && isAnimated) {
         const { height, width } = size;
+        canvas.current.width = width;
+        canvas.current.height = height;
         draw({ canvas: canvas.current, ctx, height, width, delta });
       }
     },
@@ -51,6 +53,8 @@ export function BackgroundCanvas({
   useEffect(() => {
     if (canvas.current && size && ctx) {
       const { height, width } = size;
+      canvas.current.width = width;
+      canvas.current.height = height;
       draw({ canvas: canvas.current, ctx, height, width, delta: undefined });
     }
   }, [canvas, size, ctx]);
