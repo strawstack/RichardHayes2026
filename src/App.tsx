@@ -11,6 +11,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { cloneElement, useState, type JSX } from "react";
 import { Water } from "./components/water";
 import { BackgroundDrops } from "./components/backgroundDrops";
+import { CanvasTest } from "./components/canvasTest";
 
 library.add(fas, far, fab);
 
@@ -125,7 +126,8 @@ function App() {
 
   return (
     <div className="flex justify-center relative">
-      <BackgroundDrops></BackgroundDrops>
+      {/* <BackgroundDrops></BackgroundDrops> */}
+      <CanvasTest></CanvasTest>
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 invisible">
         <FullImg />
 
