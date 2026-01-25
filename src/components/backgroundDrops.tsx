@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { BackgroundCanvas } from "./backgroundCanvas";
+import { getControlPointsForList } from "../utils";
 
 function angleToPoint(radius: number, angle: number): [number, number] {
   const clockwise = -1;
@@ -31,7 +32,7 @@ function circle({ height, width }: Size): Circle {
   const cx = Math.random() * width;
   const cy = Math.random() * height;
   const radius = Math.random() * 100 + 50;
-  const numPoints = 64;
+  const numPoints = 6;
   const varySize = 6;
   const varySpeed = 0.01;
   const angle = (2 * Math.PI) / numPoints;
@@ -73,7 +74,14 @@ function circle({ height, width }: Size): Circle {
         .map(([x, y]) => [x + cx, y + cy]);
       ctx.beginPath();
       ctx.moveTo(...points[0]);
-      points.slice(1).forEach(([x, y]) => ctx.lineTo(x, y));
+      const controlPoints = getControlPointsForList(points);
+
+      points.forEach(([x, y], i) => {
+        const { c2 } = controlPoints[i];
+        const { c1 } = controlPoints[(i + 1) % points.length];
+        ctx.bezierCurveTo(c2.x, c2.y, c1.x, c1.y, x, y);
+      });
+
       ctx.closePath();
       ctx.lineWidth = 3;
       ctx.stroke();
@@ -99,7 +107,7 @@ export function BackgroundDrops() {
 
   return (
     <BackgroundCanvas
-      isAnimated={true}
+      isAnimated={false}
       onInit={(height, width) => {
         setSize({ height, width });
       }}
