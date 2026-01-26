@@ -9,6 +9,6 @@ export function useCanvasSize(canvas: RefObject<HTMLCanvasElement | null>) {
       const { height, width } = canvas.current.getBoundingClientRect();
       setSize({ height, width });
     }
-  }, [canvas]);
+  }, []);
   return size;
 }

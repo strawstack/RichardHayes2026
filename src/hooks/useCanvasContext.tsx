@@ -7,6 +7,6 @@ export function useCanvasContext(canvas: RefObject<HTMLCanvasElement | null>) {
       const ctx = canvas.current.getContext("2d");
       if (ctx) setCtx(ctx);
     }
-  }, [canvas]);
+  }, []);
   return ctx;
 }

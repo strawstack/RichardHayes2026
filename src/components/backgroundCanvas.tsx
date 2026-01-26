@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import { useCanvasSize } from "../hooks/useCanvasSize";
 import { useCanvasContext } from "../hooks/useCanvasContext";
@@ -24,6 +24,7 @@ export function BackgroundCanvas({
   const size = useCanvasSize(canvas);
   const ctx = useCanvasContext(canvas);
   const [initOnce, setInitOnce] = useState(false);
+  const [resizeExists, setResizeExists] = useState(false);
 
   function handleResize() {
     if (canvas.current && size) {
@@ -41,17 +42,20 @@ export function BackgroundCanvas({
         draw({ canvas: canvas.current, ctx, height, width, delta });
       }
     },
-    [canvas.current, size, ctx, isAnimated, initOnce],
+    [size, ctx, isAnimated, initOnce],
   );
 
   useEffect(() => {
-    if (canvas.current && size && ctx && initOnce) {
+    if (canvas.current && size && ctx && initOnce && !resizeExists) {
+      setResizeExists(true);
       window.addEventListener("resize", handleResize);
     }
     return () => {
-      window.removeEventListener("resize", handleResize);
+      if (resizeExists) {
+        window.removeEventListener("resize", handleResize);
+      }
     };
-  }, [canvas, size, ctx, initOnce]);
+  }, [size, ctx, initOnce]);
 
   useEffect(() => {
     if (canvas.current && size && ctx && initOnce) {
@@ -60,14 +64,14 @@ export function BackgroundCanvas({
       canvas.current.height = height;
       draw({ canvas: canvas.current, ctx, height, width, delta: undefined });
     }
-  }, [canvas, size, ctx, initOnce]);
+  }, [size, ctx, initOnce]);
 
   useEffect(() => {
     if (canvas.current && size && ctx && !initOnce) {
       onInit(size.height, size.width);
       setInitOnce(true);
     }
-  }, [canvas, size, ctx, initOnce]);
+  }, [size, ctx, initOnce]);
 
   return (
     <canvas

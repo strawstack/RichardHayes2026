@@ -1,96 +1,7 @@
 import { useState } from "react";
 import { BackgroundCanvas } from "./backgroundCanvas";
-import { getControlPoints } from "../utils";
-
-type Point = {
-  x: number;
-  y: number;
-};
-
-function i(p: Point): [number, number] {
-  return [p.x, p.y];
-}
-
-function mag(a: Point) {
-  return Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2));
-}
-
-function sub(a: Point, b: Point) {
-  return {
-    x: a.x - b.x,
-    y: a.y - b.y,
-  };
-}
-
-function add(a: Point, b: Point) {
-  return {
-    x: a.x + b.x,
-    y: a.y + b.y,
-  };
-}
-
-function mul(a: Point, n: number) {
-  return {
-    x: a.x * n,
-    y: a.y + n,
-  };
-}
-
-function dot(a: Point, b: Point) {
-  return a.x * b.x + a.y * b.y;
-}
-
-function r2d(rad: number) {
-  return (rad / Math.PI) * 180;
-}
-
-function norm(a: Point) {
-  const m = mag(a);
-  return {
-    x: a.x / m,
-    y: a.y / m,
-  };
-}
-
-function controlPoints(before: Point, point: Point, after: Point) {
-  const v1 = sub(point, before);
-  const v2 = sub(after, point);
-  const m1 = mag(v1);
-  const m2 = mag(v2);
-  const angle = Math.acos(dot(v1, v2) / (m1 * m2));
-  const perp_angle = Math.atan2(v2.y, v2.x) + angle / 2 + Math.PI / 2;
-  const v3 = {
-    x: Math.cos(perp_angle),
-    y: Math.sin(perp_angle),
-  };
-  const bendValue = 30;
-  const pv = mul(norm(v3), bendValue);
-  const c1 = sub(point, pv);
-  const c2 = add(pv, point);
-  return { c1, c2 };
-}
-
-function drawSmallPoint(ctx: CanvasRenderingContext2D) {
-  return (point: Point) => {
-    ctx.save();
-    ctx.fillStyle = "green";
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.restore();
-  };
-}
-
-function drawPoint(ctx: CanvasRenderingContext2D) {
-  return (point: Point) => {
-    ctx.save();
-    ctx.fillStyle = "#333";
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 8, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.restore();
-  };
-}
+import { getControlPoints, getControlPointsForList } from "../utils";
+import type { Point } from "../types";
 
 export function CanvasTest() {
   const [size, setSize] = useState<{ height: number; width: number } | null>(
@@ -102,62 +13,69 @@ export function CanvasTest() {
         setSize({ height, width });
       }}
       draw={({ ctx }) => {
-        const small = drawSmallPoint(ctx);
-        const point = drawPoint(ctx);
+        const cx = 400;
+        const cy = 400;
+        const radius = 200;
+        const numPts = 6;
+        const angle = (2 * Math.PI) / numPts;
+        const p = Array(numPts)
+          .fill(null)
+          .map((_, i) => {
+            const ang = i * angle;
+            return {
+              x: radius * Math.cos(ang) + cx,
+              y: radius * Math.sin(ang) + cy,
+            };
+          });
 
-        const z: Point = { x: 10, y: 10 };
-        const a: Point = { x: 100, y: 100 };
-        const b: Point = { x: 200, y: 100 };
-        const c: Point = { x: 200, y: 200 };
-        const d: Point = { x: 300, y: 250 };
+        p.forEach(({ x, y }) => {
+          ctx.fillStyle = "#333";
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, 2 * Math.PI);
+          ctx.fill();
+        });
 
-        // const v1 = sub(b, a);
-        // const v2 = sub(c, b);
+        const z = p[p.length - 1];
+        const a = p[0];
+        const b = p[1];
 
-        // const angle = Math.acos(dot(v1, v2) / (mag(v1) * mag(v2)));
-        // const half = angle / 2;
+        const { c1, c2 } = getControlPoints(z, a, b);
+        const { c1: p1a, c2: p1b } = getControlPoints(p[0], p[1], p[2]);
+        const { c1: p2a, c2: p2b } = getControlPoints(p[1], p[2], p[3]);
+        const { c1: p3a, c2: p3b } = getControlPoints(p[2], p[3], p[4]);
+        const { c1: p4a, c2: p4b } = getControlPoints(p[3], p[4], p[5]);
+        const { c1: p5a, c2: p5b } = getControlPoints(p[4], p[5], p[0]);
 
-        // const atan_v1 = r2d(Math.atan2(v1.y, v1.x));
-        // const atan_v2 = r2d(Math.atan2(v2.y, v2.x));
-
-        // const halfway_angle = atan_v2 + half;
-        // const perp_angle = atan_v2 + half + Math.PI;
-
-        // const v3 = {
-        //   // Vector halfway between v1 and v2 (unit vector)
-        //   x: Math.cos(halfway_angle),
-        //   y: Math.sin(halfway_angle),
-        // };
-
-        // const v3p = {
-        //   // Vector halfway between v1 and v2 (unit vector)
-        //   x: Math.cos(perp_angle),
-        //   y: Math.sin(perp_angle),
-        // };
-
-        point(z);
-        point(a);
-        point(b);
-        // point(c);
-        // point(d);
-
-        const drawCtrl = ({ c1, c2 }: { c1: Point; c2: Point }) => {
-          small(c1);
-          small(c2);
+        const draw = (cp: Point) => {
+          ctx.fillStyle = "blue";
+          ctx.beginPath();
+          ctx.arc(cp.x, cp.y, 3, 0, 2 * Math.PI);
+          ctx.arc(cp.x, cp.y, 3, 0, 2 * Math.PI);
+          ctx.fill();
         };
 
-        const aa = getControlPoints(z, a, b);
-        // const bb = getControlPoints(a, b, c);
-        // const cc = getControlPoints(b, c, d);
-
-        drawCtrl(aa);
-        // drawCtrl(bb);
-        // drawCtrl(cc);
+        draw(c1);
+        draw(c2);
+        draw(p1a);
+        draw(p1b);
+        draw(p2a);
+        draw(p2b);
+        draw(p3a);
+        draw(p3b);
+        draw(p4a);
+        draw(p4b);
+        draw(p5a);
+        draw(p5b);
 
         ctx.beginPath();
         ctx.moveTo(z.x, z.y);
-        ctx.bezierCurveTo(z.x, z.y, aa.c1.x, aa.c1.y, a.x, a.y);
-        // ctx.bezierCurveTo(c2.x, c2.y, c.x, c.y, c.x, c.y);
+        ctx.bezierCurveTo(p5b.x, p5b.y, c1.x, c1.y, a.x, a.y);
+        ctx.bezierCurveTo(c2.x, c2.y, p1a.x, p1a.y, b.x, b.y);
+        ctx.bezierCurveTo(p1b.x, p1b.y, p2a.x, p2a.y, p[2].x, p[2].y);
+        ctx.bezierCurveTo(p2b.x, p2b.y, p3a.x, p3a.y, p[3].x, p[3].y);
+        ctx.bezierCurveTo(p3b.x, p3b.y, p4a.x, p4a.y, p[4].x, p[4].y);
+        ctx.bezierCurveTo(p4b.x, p4b.y, p5a.x, p5a.y, p[5].x, p[5].y);
+
         ctx.stroke();
       }}
     ></BackgroundCanvas>

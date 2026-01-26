@@ -1,14 +1,10 @@
 import { useMemo, useState } from "react";
 import { BackgroundCanvas } from "./backgroundCanvas";
 import { getControlPointsForList } from "../utils";
+import type { Point } from "../types";
 
 function angleToPoint(radius: number, angle: number): [number, number] {
-  const clockwise = -1;
-  const rotate = Math.PI / 2;
-  return [
-    radius * Math.cos(angle * clockwise + rotate),
-    radius * Math.sin(angle * clockwise + rotate),
-  ];
+  return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }
 
 type Circle = {
@@ -33,7 +29,7 @@ function circle({ height, width }: Size): Circle {
   const cy = Math.random() * height;
   const radius = Math.random() * 100 + 50;
   const numPoints = 6;
-  const varySize = 6;
+  const varySize = 30;
   const varySpeed = 0.01;
   const angle = (2 * Math.PI) / numPoints;
   const initAngle = Math.random() * angle;
@@ -62,27 +58,27 @@ function circle({ height, width }: Size): Circle {
     render(ctx: CanvasRenderingContext2D, delta: number | undefined = 1) {
       const flipSpeeds = (speeds: number[]) =>
         speeds.map((s) => {
-          const flip = Math.random() < 0.1;
+          const flip = Math.random() < 0.01;
           return flip ? -1 * s : s;
         });
       const clamp = (v: number) =>
         Math.max(Math.min(v, varySize), -1 * varySize);
       varySpeeds = flipSpeeds(varySpeeds);
       varyValues = varyValues.map((v, i) => clamp(v + varySpeeds[i] * delta));
-      const points: [number, number][] = angleValues
+      const points: Point[] = angleValues
         .map((v, i) => angleToPoint(radius + varyValues[i], v))
-        .map(([x, y]) => [x + cx, y + cy]);
+        .map(([x, y]) => {
+          return { x: x + cx, y: y + cy };
+        });
       ctx.beginPath();
-      ctx.moveTo(...points[0]);
       const controlPoints = getControlPointsForList(points);
-
-      points.forEach(([x, y], i) => {
-        const { c2 } = controlPoints[i];
-        const { c1 } = controlPoints[(i + 1) % points.length];
+      const z = points[points.length - 1];
+      ctx.moveTo(z.x, z.y);
+      points.forEach(({ x, y }, i) => {
+        const { c2 } = controlPoints[(i + points.length - 1) % points.length]; // Same as `(i - 1) % len`
+        const { c1 } = controlPoints[i];
         ctx.bezierCurveTo(c2.x, c2.y, c1.x, c1.y, x, y);
       });
-
-      ctx.closePath();
       ctx.lineWidth = 3;
       ctx.stroke();
     },
@@ -96,7 +92,7 @@ export function BackgroundDrops() {
 
   const circles: Circle[] = useMemo(() => {
     if (size) {
-      const numCircles = 10;
+      const numCircles = 16;
       return Array(numCircles)
         .fill(null)
         .map(() => circle(size));
