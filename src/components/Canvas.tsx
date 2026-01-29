@@ -43,18 +43,71 @@ export function Canvas({
   onMount,
   onUnMount,
   draw,
+  ...props
 }: {
   className: string;
   onMount: (canvasRef: HTMLCanvasElement) => void;
-  onUnMount: (canvasRef: HTMLCanvasElement) => void;
+  onUnMount?: (canvasRef: HTMLCanvasElement) => void;
   draw: (ctx: CanvasRenderingContext2D) => void;
+  [key: string]: any;
 }) {
+  const {
+    handleMouseDown: handleMouseDownProp,
+    handleMouseUp: handleMouseUpProp,
+    handleMouseMove: handleMouseMoveProp,
+  } = props;
   const canvasRef = useCanvas(draw);
 
+  function handleMouseDown(e: MouseEvent) {
+    const { left, top } = canvasRef.current!.getBoundingClientRect();
+    const { clientX, clientY } = e;
+    const m = {
+      x: clientX - left,
+      y: clientY - top,
+    };
+    handleMouseDownProp({
+      pos: m,
+      event: e,
+    });
+  }
+  function handleMouseUp(e: MouseEvent) {
+    const { left, top } = canvasRef.current!.getBoundingClientRect();
+    const { clientX, clientY } = e;
+    const m = {
+      x: clientX - left,
+      y: clientY - top,
+    };
+    handleMouseUpProp({
+      pos: m,
+      event: e,
+    });
+  }
+  function handleMouseMove(e: MouseEvent) {
+    const { left, top } = canvasRef.current!.getBoundingClientRect();
+    const { clientX, clientY } = e;
+    const m = {
+      x: clientX - left,
+      y: clientY - top,
+    };
+    handleMouseMoveProp({
+      pos: m,
+      event: e,
+    });
+  }
+
   useEffect(() => {
-    if (canvasRef.current) onMount(canvasRef.current);
+    if (canvasRef.current) {
+      onMount(canvasRef.current);
+      canvasRef.current.addEventListener("mousedown", handleMouseDown);
+      canvasRef.current.addEventListener("mouseup", handleMouseUp);
+      canvasRef.current.addEventListener("mousemove", handleMouseMove);
+    }
     return () => {
-      if (canvasRef.current) onUnMount(canvasRef.current);
+      if (canvasRef.current) {
+        canvasRef.current.removeEventListener("mousedown", handleMouseDown);
+        canvasRef.current.removeEventListener("mouseup", handleMouseUp);
+        canvasRef.current.removeEventListener("mousemove", handleMouseMove);
+      }
     };
   }, []);
 
