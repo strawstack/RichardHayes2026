@@ -12,6 +12,7 @@ import { cloneElement, useRef, useState, type JSX } from "react";
 import { Water } from "./components/water";
 import { Drops } from "./components/Drops";
 import { Display } from "./components/Display";
+import { CircleBackground } from "./components/CircleBackground";
 
 library.add(fas, far, fab);
 
@@ -127,8 +128,7 @@ function App() {
 
   return (
     <div className="flex justify-center relative">
-      <Display displayRef={displayRef}></Display>
-      <Drops displayRef={displayRef}></Drops>
+      <CircleBackground></CircleBackground>
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 invisible">
         <FullImg />
 

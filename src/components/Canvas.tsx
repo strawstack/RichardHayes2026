@@ -10,7 +10,9 @@ function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
   return false;
 }
 
-function useCanvas(draw: (ctx: CanvasRenderingContext2D) => void) {
+function useCanvas(
+  draw: (ctx: CanvasRenderingContext2D, timestamp: number) => void,
+) {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -19,16 +21,15 @@ function useCanvas(draw: (ctx: CanvasRenderingContext2D) => void) {
     let animationFrameId: number;
     const ctx = canvas.current.getContext("2d")!;
 
-    const render = () => {
+    const render = (timestamp: number) => {
       if (!canvas.current) return;
       resizeCanvasToDisplaySize(canvas.current);
       ctx.clearRect(0, 0, canvas.current.height, canvas.current.width);
-      draw(ctx);
+      draw(ctx, timestamp);
       animationFrameId = window.requestAnimationFrame(render);
     };
 
-    draw(ctx);
-    render();
+    render(0);
 
     return () => {
       window.cancelAnimationFrame(animationFrameId);
@@ -45,10 +46,10 @@ export function Canvas({
   draw,
   ...props
 }: {
-  className: string;
-  onMount: (canvasRef: HTMLCanvasElement) => void;
+  className?: string;
+  onMount?: (canvasRef: HTMLCanvasElement) => void;
   onUnMount?: (canvasRef: HTMLCanvasElement) => void;
-  draw: (ctx: CanvasRenderingContext2D) => void;
+  draw: (ctx: CanvasRenderingContext2D, timestamp: number) => void;
   [key: string]: any;
 }) {
   const {
@@ -65,10 +66,12 @@ export function Canvas({
       x: clientX - left,
       y: clientY - top,
     };
-    handleMouseDownProp({
-      pos: m,
-      event: e,
-    });
+    if (handleMouseDownProp) {
+      handleMouseDownProp({
+        pos: m,
+        event: e,
+      });
+    }
   }
   function handleMouseUp(e: MouseEvent) {
     const { left, top } = canvasRef.current!.getBoundingClientRect();
@@ -77,10 +80,12 @@ export function Canvas({
       x: clientX - left,
       y: clientY - top,
     };
-    handleMouseUpProp({
-      pos: m,
-      event: e,
-    });
+    if (handleMouseUpProp) {
+      handleMouseUpProp({
+        pos: m,
+        event: e,
+      });
+    }
   }
   function handleMouseMove(e: MouseEvent) {
     const { left, top } = canvasRef.current!.getBoundingClientRect();
@@ -89,21 +94,30 @@ export function Canvas({
       x: clientX - left,
       y: clientY - top,
     };
-    handleMouseMoveProp({
-      pos: m,
-      event: e,
-    });
+    if (handleMouseMoveProp) {
+      handleMouseMoveProp({
+        pos: m,
+        event: e,
+      });
+    }
   }
 
   useEffect(() => {
     if (canvasRef.current) {
-      onMount(canvasRef.current);
-      canvasRef.current.addEventListener("mousedown", handleMouseDown);
-      canvasRef.current.addEventListener("mouseup", handleMouseUp);
-      canvasRef.current.addEventListener("mousemove", handleMouseMove);
+      if (onMount) onMount(canvasRef.current);
+      if (handleMouseDownProp && handleMouseUpProp && handleMouseMoveProp) {
+        canvasRef.current.addEventListener("mousedown", handleMouseDown);
+        canvasRef.current.addEventListener("mouseup", handleMouseUp);
+        canvasRef.current.addEventListener("mousemove", handleMouseMove);
+      }
     }
     return () => {
-      if (canvasRef.current) {
+      if (
+        canvasRef.current &&
+        handleMouseDownProp &&
+        handleMouseUpProp &&
+        handleMouseMoveProp
+      ) {
         canvasRef.current.removeEventListener("mousedown", handleMouseDown);
         canvasRef.current.removeEventListener("mouseup", handleMouseUp);
         canvasRef.current.removeEventListener("mousemove", handleMouseMove);
