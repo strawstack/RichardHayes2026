@@ -8,9 +8,10 @@ import {
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { cloneElement, useState, type JSX } from "react";
+import { cloneElement, useRef, useState, type JSX } from "react";
 import { Water } from "./components/water";
 import { Drops } from "./components/Drops";
+import { Display } from "./components/Display";
 
 library.add(fas, far, fab);
 
@@ -122,10 +123,12 @@ function Details({ open, close, summary, details }: Props) {
 
 function App() {
   const [isRunning, setIsRunning] = useState(false);
+  const displayRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="flex justify-center relative">
-      <Drops></Drops>
+      <Display displayRef={displayRef}></Display>
+      <Drops displayRef={displayRef}></Drops>
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 invisible">
         <FullImg />
 
