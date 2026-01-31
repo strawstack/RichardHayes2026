@@ -1,4 +1,11 @@
-import type { Point } from "./types";
+import { couldStartTrivia } from "typescript";
+import type {
+  CircleData,
+  ControlPoints,
+  Point,
+  Timestamp,
+  Variation,
+} from "./types";
 
 function mag(a: Point) {
   return Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2));
@@ -82,23 +89,29 @@ export function getCirclePoints(n: number) {
   return Array(n)
     .fill(null)
     .map((_, i) => i * angle)
-    .map(() => {
+    .map((_, i) => {
       return {
-        x: Math.cos(angle),
-        y: Math.sin(angle),
+        x: Math.cos(i * angle),
+        y: Math.sin(i * angle),
       };
     });
 }
 
-export function formatCircle(points: Point[], radius: number, center: Point) {
-  return points.map((p) => add(mul(p, radius), center));
+export function formatCircle(
+  { basePoints, radius, center, created }: CircleData,
+  timestamp: Timestamp,
+): Point[] {
+  const delta = timestamp - created;
+  return basePoints.map((p, i) => add(mul(p, radius[i](delta)), center));
 }
 
-export function controlPointsForCircle(circlePoints: Point[]) {
+export function controlPointsForCircle(circlePoints: Point[]): ControlPoints {
+  const copyCirclePoints = [...circlePoints];
+
   // Move last to first, so i-th control points align with i-th point
-  const copyCirclePoints = { ...circlePoints };
   const last = copyCirclePoints.pop()!;
   copyCirclePoints.unshift(last);
+
   const length = copyCirclePoints.length;
   const controlPoints = [];
   for (let i = 0; i < length; i++) {
@@ -107,7 +120,7 @@ export function controlPointsForCircle(circlePoints: Point[]) {
     const c = copyCirclePoints[(i + 2) % length];
     const n = sub(b, a);
     const m = sub(c, b);
-    const bump = 40;
+    const bump = 0.25 * dist(a, b);
     const { c1, c2 } = getControlPoints(b, controlVector(n, m), bump);
     controlPoints.push({ c1, c2 });
   }
@@ -117,11 +130,12 @@ export function controlPointsForCircle(circlePoints: Point[]) {
 export function renderCircle(
   ctx: CanvasRenderingContext2D,
   p: Point[],
-  c: { c1: Point; c2: Point }[],
+  c: ControlPoints,
+  color: string,
 ) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 16;
   ctx.beginPath();
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2;
   ctx.moveTo(p[0].x, p[0].y);
   const len = p.length;
   for (let i = 0; i < len; i++) {
