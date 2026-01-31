@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 import App from "./App.js";
+import { Test } from "./routes/Test";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -10,6 +11,7 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route index element={<App />} />
         <Route path="about" element={<div>about</div>} />
+        <Route path="test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

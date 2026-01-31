@@ -124,12 +124,10 @@ function Details({ open, close, summary, details }: Props) {
 
 function App() {
   const [isRunning, setIsRunning] = useState(false);
-  const displayRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="flex justify-center relative">
-      <CircleBackground></CircleBackground>
-      <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 invisible">
+      <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8">
         <FullImg />
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
