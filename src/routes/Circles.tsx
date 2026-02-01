@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import type { CircleData, Timestamp } from "../types";
-import { Canvas } from "./Canvas";
+import { Canvas } from "../components/Canvas";
 import {
   controlPointsForCircle,
   formatCircle,
@@ -36,7 +36,7 @@ function circleData({ width, height }: Size, color: string): CircleData {
   };
 }
 
-export function CircleBackground() {
+export function Circles() {
   const circles = useRef<CircleData[]>([]);
   const draw = (ctx: CanvasRenderingContext2D, timestamp: Timestamp) => {
     for (let circle of circles.current) {

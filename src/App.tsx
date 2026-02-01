@@ -8,11 +8,8 @@ import {
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { cloneElement, useRef, useState, type JSX } from "react";
+import { cloneElement, useState, type JSX } from "react";
 import { Water } from "./components/water";
-import { Drops } from "./components/Drops";
-import { Display } from "./components/Display";
-import { CircleBackground } from "./components/CircleBackground";
 
 library.add(fas, far, fab);
 
