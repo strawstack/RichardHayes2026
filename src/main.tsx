@@ -6,6 +6,7 @@ import App from "./App.js";
 import { Fiber } from "./routes/Fiber";
 import { Circles } from "./routes/Circles";
 import { Shader } from "./routes/Shader";
+import { Card } from "./routes/Card";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="circle" element={<Circles />} />
         <Route path="shader" element={<Shader />} />
         <Route path="fiber" element={<Fiber />} />
+        <Route path="card" element={<Card />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
