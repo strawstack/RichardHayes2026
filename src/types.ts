@@ -24,6 +24,10 @@ export interface CircleData {
   radius: Variation[];
   center: Point;
   color: string;
+  operation?: GlobalCompositeOperation;
+  drawPath?: DrawPath;
 }
 
 export type ControlPoints = { c1: Point; c2: Point }[];
+
+export type DrawPath = "fill" | "stroke";

@@ -2,6 +2,7 @@ import { couldStartTrivia } from "typescript";
 import type {
   CircleData,
   ControlPoints,
+  DrawPath,
   Point,
   Timestamp,
   Variation,
@@ -18,7 +19,7 @@ function sub(a: Point, b: Point) {
   };
 }
 
-function add(a: Point, b: Point) {
+export function add(a: Point, b: Point) {
   return {
     x: a.x + b.x,
     y: a.y + b.y,
@@ -132,8 +133,12 @@ export function renderCircle(
   p: Point[],
   c: ControlPoints,
   color: string,
+  operation?: GlobalCompositeOperation,
+  drawPath?: DrawPath,
 ) {
+  if (operation) ctx.globalCompositeOperation = operation;
   ctx.strokeStyle = color;
+  ctx.fillStyle = color;
   ctx.lineWidth = 16;
   ctx.beginPath();
   ctx.moveTo(p[0].x, p[0].y);
@@ -149,5 +154,6 @@ export function renderCircle(
       p[i1].y,
     );
   }
-  ctx.stroke();
+  drawPath === "fill" || !drawPath ? ctx.fill() : ctx.stroke();
+  ctx.globalCompositeOperation = "source-over"; // default
 }

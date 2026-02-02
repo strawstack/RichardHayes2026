@@ -24,7 +24,7 @@ function useCanvas(
     const render = (timestamp: number) => {
       if (!canvas.current) return;
       resizeCanvasToDisplaySize(canvas.current);
-      ctx.clearRect(0, 0, canvas.current.height, canvas.current.width);
+      ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
       draw(ctx, timestamp);
       animationFrameId = window.requestAnimationFrame(render);
     };

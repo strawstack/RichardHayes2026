@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 
