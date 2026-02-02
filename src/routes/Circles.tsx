@@ -98,7 +98,7 @@ export function Circles() {
                 size: { width, height },
                 baseRadius,
                 center,
-                color: "#fca5a5",
+                color: "#c4b5fd",
               }),
               circleData({
                 size: { width, height },
