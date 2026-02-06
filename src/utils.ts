@@ -12,7 +12,7 @@ function mag(a: Point) {
   return Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2));
 }
 
-function sub(a: Point, b: Point) {
+export function sub(a: Point, b: Point) {
   return {
     x: a.x - b.x,
     y: a.y - b.y,

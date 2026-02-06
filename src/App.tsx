@@ -8,10 +8,24 @@ import {
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { cloneElement, useState, type JSX } from "react";
+import {
+  type MouseEvent,
+  cloneElement,
+  useRef,
+  useState,
+  type JSX,
+} from "react";
 import { Water } from "./components/water";
+import { BackgroundBlobs } from "./components/BackgroundBlobs";
 
 library.add(fas, far, fab);
+
+enum Suit {
+  Spade = "Spade",
+  Club = "Club",
+  Heart = "Heart",
+  Diamond = "Diamond",
+}
 
 type Props = {
   children?: JSX.Element | JSX.Element[] | string;
@@ -78,6 +92,87 @@ function IconChip({
   );
 }
 
+const suitLookup: { [key in Suit]: string } = {
+  [Suit.Spade]: "♠",
+  [Suit.Club]: "♣",
+  [Suit.Heart]: "♥",
+  [Suit.Diamond]: "♦",
+};
+
+const suitColor: { [key in Suit]: string } = {
+  [Suit.Spade]: "text-slate-800 opacity-70",
+  [Suit.Club]: "text-teal-800 opacity-70",
+  [Suit.Heart]: "text-rose-800 opacity-70",
+  [Suit.Diamond]: "text-orange-800 opacity-70",
+};
+
+function CardChip({
+  className,
+  suit,
+  ...props
+}: {
+  className: string;
+  suit: Suit;
+  [key: string]: any;
+}) {
+  const { type, size, number } = props;
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  function handleMouseMove(e: any) {
+    const angle = 30;
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+    const mouse = {
+      x: e.clientX - left - width / 2,
+    };
+    const mouseNormal = {
+      x: (mouse.x / width) * 2,
+    };
+    const rotY = mouseNormal.x * angle;
+
+    if (cardRef.current) {
+      cardRef.current.style = `
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: rotateX(10deg) rotateY(${rotY}deg);
+      `;
+    }
+  }
+
+  function handleMouseLeave(e: any) {
+    if (cardRef.current) {
+      cardRef.current.style = `
+        transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s;
+        transform: rotateX(0deg) rotateY(0deg);
+      `;
+    }
+  }
+
+  return (
+    <div
+      className={`relative w-14 sm:w-20 h-22 sm:h-28 border-2 rounded-md px-1 flex justify-center cursor-pointer items-center ${className}`}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className={`absolute top-0 sm:top-1 left-1 ${suitColor[suit]}`}>
+        <div className="leading-none">{number}</div>
+        <div className="leading-none">{suitLookup[suit]}</div>
+      </div>
+      <div
+        className={`flex justify-center scale-60 sm:scale-100 ${suitColor[suit]}`}
+      >
+        <Icon type={type} size={size} />
+      </div>
+      <div
+        className={`absolute bottom-0 sm:bottom-1 right-1 ${suitColor[suit]}`}
+      >
+        <div className="leading-none rotate-180">{suitLookup[suit]}</div>
+        <div className="leading-none rotate-180">{number}</div>
+      </div>
+    </div>
+  );
+}
+
 function ProjectCard({
   className,
   ...props
@@ -124,7 +219,8 @@ function App() {
 
   return (
     <div className="flex justify-center relative">
-      <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8">
+      <BackgroundBlobs />
+      <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 opacity-90">
         <FullImg />
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
@@ -193,35 +289,52 @@ function App() {
 
         <ProjectCard
           className="border-l-0 border-r-0 sm:border-l-4 sm:border-r-4"
-          title="Game Dev In Process"
+          title={
+            <div>
+              Game Dev{" "}
+              <span className="sm:inline-block hidden">In Process</span>
+            </div>
+          }
           icon={<Icon type={["fas", "podcast"]} size="xl" />}
           description={text.gameDevInProcess}
         />
 
-        <div className="grid grid-cols-[1fr] sm:grid-cols-[auto_1fr] gap-x-2">
-          <SqImg />
-          <div className="flex justify-evenly">
-            <IconChip
-              className="hover:bg-gray-200 hover:border-gray-200"
-              type={["fab", "youtube"]}
-              size="2xl"
-            ></IconChip>
-            <IconChip
-              className="hover:bg-gray-200 hover:border-gray-200"
-              type={["fab", "itch-io"]}
-              size="2xl"
-            ></IconChip>
-            <IconChip
-              className="hover:bg-gray-200 hover:border-gray-200"
-              type={["fab", "github-alt"]}
-              size="2xl"
-            ></IconChip>
-            <IconChip
-              className="hover:bg-gray-200 hover:border-gray-200"
-              type={["fab", "linkedin-in"]}
-              size="2xl"
-            ></IconChip>
-          </div>
+        <div className="flex justify-evenly items-center">
+          <CardChip
+            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            type={["fab", "youtube"]}
+            size="2xl"
+            number="7"
+            suit={Suit.Diamond}
+          ></CardChip>
+          <CardChip
+            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            type={["fab", "itch-io"]}
+            size="2xl"
+            number="7"
+            suit={Suit.Heart}
+          ></CardChip>
+          <CardChip
+            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            type={["fab", "github-alt"]}
+            size="2xl"
+            number="8"
+            suit={Suit.Heart}
+          ></CardChip>
+          <CardChip
+            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            type={["fa", "file"]}
+            size="2xl"
+            number="8"
+            suit={Suit.Club}
+          ></CardChip>
+          <CardChip
+            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            type={["fab", "linkedin-in"]}
+            size="2xl"
+            number="3"
+            suit={Suit.Spade}
+          ></CardChip>
         </div>
 
         <FullImg />
