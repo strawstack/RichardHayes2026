@@ -8,7 +8,13 @@ import {
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { cloneElement, useRef, useState, type JSX } from "react";
+import {
+  cloneElement,
+  useRef,
+  useState,
+  type CSSProperties,
+  type JSX,
+} from "react";
 import { Water } from "./components/water";
 import { BackgroundBlobs } from "./components/BackgroundBlobs";
 import gameDevLogo from "./assets/game_dev_logo.png";
@@ -43,17 +49,10 @@ const Row = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-const FullImg = ({ img }: { img?: string }) => {
+const FullImg = ({ img, style }: { img?: string; style?: CSSProperties }) => {
   return (
     <div className="h-32">
-      <div
-        className="h-full border-4 bg-gray-100"
-        style={{
-          backgroundImage: `url(${img})`,
-          backgroundPositionX: "80px",
-          animation: "scrollLeft 4s linear infinite",
-        }}
-      ></div>
+      <div className="h-full border-4 bg-gray-100" style={style}></div>
     </div>
   );
 };
@@ -242,7 +241,7 @@ function App() {
               />
             </div>
           </div>
-          <div className="p-4 border-l-4 sm:border-l-0 border-r-4 border-teal-800/20">
+          <div className="p-4 border-l-4 sm:border-l-0 border-r-4">
             <div className="text-slate-500 font-medium">{text.intro}</div>
           </div>
         </div>
@@ -287,7 +286,14 @@ function App() {
           description={text.music}
         />
 
-        <FullImg img={gameDevLogo} />
+        <FullImg
+          img={gameDevLogo}
+          style={{
+            backgroundImage: `url(${gameDevLogo})`,
+            backgroundPositionX: "80px",
+            animation: "scrollLeft 4s linear infinite",
+          }}
+        />
 
         <ProjectCard
           className="border-l-0 border-r-0 sm:border-l-4 sm:border-r-4"
