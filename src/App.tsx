@@ -8,15 +8,10 @@ import {
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import {
-  type MouseEvent,
-  cloneElement,
-  useRef,
-  useState,
-  type JSX,
-} from "react";
+import { cloneElement, useRef, useState, type JSX } from "react";
 import { Water } from "./components/water";
 import { BackgroundBlobs } from "./components/BackgroundBlobs";
+import gameDevLogo from "./assets/game_dev_logo.png";
 
 library.add(fas, far, fab);
 
@@ -51,7 +46,14 @@ const Row = ({ children }: { children: JSX.Element }) => {
 const FullImg = ({ img }: { img?: string }) => {
   return (
     <div className="h-32">
-      <div className="h-full border-4 bg-gray-100"></div>
+      <div
+        className="h-full border-4 bg-gray-100"
+        style={{
+          backgroundImage: `url(${img})`,
+          backgroundPositionX: "80px",
+          animation: "scrollLeft 4s linear infinite",
+        }}
+      ></div>
     </div>
   );
 };
@@ -285,7 +287,7 @@ function App() {
           description={text.music}
         />
 
-        <FullImg />
+        <FullImg img={gameDevLogo} />
 
         <ProjectCard
           className="border-l-0 border-r-0 sm:border-l-4 sm:border-r-4"
