@@ -149,9 +149,9 @@ export function BackgroundBlobView() {
         const baseRadius = 64;
         const pad = 20;
         circles.current = [
-          eggPattern({ x: 64, y: height / 2 }),
+          eggPattern({ x: 64 + pad, y: height / 2 }),
           slatePattern({ x: width / 2, y: height / 2 }),
-          xorPattern({ x: width - 64, y: height / 2 }),
+          xorPattern({ x: width - 64 - pad, y: height / 2 }),
         ].flat();
       }}
       draw={draw}

@@ -17,7 +17,9 @@ import {
 } from "react";
 import { Water } from "./components/water";
 import projectLogo from "./assets/go_project_128.png";
+import videoLogo from "./assets/videos_logo_128.png";
 import { BackgroundBlobView } from "./components/BackgroundBlobView";
+import { ThreeShape } from "./components/ThreeShape";
 
 library.add(fas, far, fab);
 
@@ -82,7 +84,7 @@ const FullBlock = ({
 
 const text = {
   intro:
-    "I’m Richard. Below, you'll find games, project, videos, and (suprizingly) hip-hip songs I've created. Once a week, I record a casual podcast with a friend about Indie Game Dev.",
+    "I’m Richard. Find my games, projects, videos, and songs below. Once a week, I record a casual podcast with a friend about Indie Game Dev.",
   games:
     "A collection of indie games I've made for jams, personal projects, and self-expression.",
   projects:
@@ -144,8 +146,7 @@ function CardChip({
 
   function handleMouseMove(e: any) {
     const angle = 30;
-    const { left, top, width, height } =
-      e.currentTarget.getBoundingClientRect();
+    const { left, width } = e.currentTarget.getBoundingClientRect();
     const mouse = {
       x: e.clientX - left - width / 2,
     };
@@ -165,7 +166,7 @@ function CardChip({
   function handleMouseLeave(e: any) {
     if (cardRef.current) {
       cardRef.current.style = `
-        transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s;
+        transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
         transform: rotateX(0deg) rotateY(0deg);
       `;
     }
@@ -297,7 +298,9 @@ function App() {
         </FullBlock>
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
-          <SqImg />
+          <SqBlock>
+            <img src={videoLogo}></img>
+          </SqBlock>
           <ProjectCard
             className="border-r-4"
             title="Videos"
@@ -313,7 +316,7 @@ function App() {
         />
 
         <FullBlock>
-          <div>children</div>
+          <ThreeShape />
         </FullBlock>
 
         <ProjectCard
@@ -330,35 +333,35 @@ function App() {
 
         <div className="flex justify-evenly items-center">
           <CardChip
-            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            className="text-teal-800"
             type={["fab", "youtube"]}
             size="2xl"
             number="7"
             suit={Suit.Diamond}
           ></CardChip>
           <CardChip
-            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            className="text-teal-800"
             type={["fab", "itch-io"]}
             size="2xl"
             number="7"
             suit={Suit.Heart}
           ></CardChip>
           <CardChip
-            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            className="text-teal-800"
             type={["fab", "github-alt"]}
             size="2xl"
             number="8"
             suit={Suit.Heart}
           ></CardChip>
           <CardChip
-            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            className="text-teal-800"
             type={["fa", "file"]}
             size="2xl"
             number="8"
             suit={Suit.Club}
           ></CardChip>
           <CardChip
-            className="hover:bg-gray-200 hover:border-gray-200 text-teal-800"
+            className="text-teal-800"
             type={["fab", "linkedin-in"]}
             size="2xl"
             number="3"
