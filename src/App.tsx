@@ -16,8 +16,7 @@ import {
   type JSX,
 } from "react";
 import { Water } from "./components/water";
-import { BackgroundBlobs } from "./components/BackgroundBlobs";
-import gameDevLogo from "./assets/game_dev_logo.png";
+import projectLogo from "./assets/go_project_128.png";
 import { BackgroundBlobView } from "./components/BackgroundBlobView";
 
 library.add(fas, far, fab);
@@ -34,11 +33,20 @@ type Props = {
   [key: string]: any;
 };
 
-const SqImg = () => {
+const SqImg = ({ img }: { img?: string }) => {
   return (
     <div className="w-32 h-32 hidden sm:inline-block">
-      <div className="bg-gray-100 w-full h-full border-4"></div>
+      <div
+        className="bg-gray-100 w-full h-full border-4"
+        style={{ backgroundImage: `url(${img})` }}
+      ></div>
     </div>
+  );
+};
+
+const SqBlock = ({ children }: { children: JSX.Element }) => {
+  return (
+    <div className="border-4 size-32 hidden sm:inline-block">{children}</div>
   );
 };
 
@@ -279,7 +287,9 @@ function App() {
             icon={<Icon type={["fas", "splotch"]} size="xl" />}
             description={text.projects}
           />
-          <SqImg />
+          <SqBlock>
+            <img src={projectLogo}></img>
+          </SqBlock>
         </div>
 
         <FullBlock>
@@ -302,14 +312,9 @@ function App() {
           description={text.music}
         />
 
-        <FullImg
-          img={gameDevLogo}
-          style={{
-            backgroundImage: `url(${gameDevLogo})`,
-            backgroundPositionX: "80px",
-            animation: "scrollLeft 4s linear infinite",
-          }}
-        />
+        <FullBlock>
+          <div>children</div>
+        </FullBlock>
 
         <ProjectCard
           className="border-l-0 border-r-0 sm:border-l-4 sm:border-r-4"
