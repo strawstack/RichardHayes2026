@@ -24,6 +24,7 @@ export interface CircleData {
   radius: Variation[];
   center: Point;
   color: string;
+  lineWidth?: number;
   operation?: GlobalCompositeOperation;
   drawPath?: DrawPath;
 }

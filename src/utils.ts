@@ -134,12 +134,13 @@ export function renderCircle(
   c: ControlPoints,
   color: string,
   operation?: GlobalCompositeOperation,
+  lineWidth?: number,
   drawPath?: DrawPath,
 ) {
   if (operation) ctx.globalCompositeOperation = operation;
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
-  ctx.lineWidth = 16;
+  ctx.lineWidth = lineWidth || 16;
   ctx.beginPath();
   ctx.moveTo(p[0].x, p[0].y);
   const len = p.length;

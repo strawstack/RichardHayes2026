@@ -18,6 +18,7 @@ import {
 import { Water } from "./components/water";
 import { BackgroundBlobs } from "./components/BackgroundBlobs";
 import gameDevLogo from "./assets/game_dev_logo.png";
+import { BackgroundBlobView } from "./components/BackgroundBlobView";
 
 library.add(fas, far, fab);
 
@@ -53,6 +54,20 @@ const FullImg = ({ img, style }: { img?: string; style?: CSSProperties }) => {
   return (
     <div className="h-32">
       <div className="h-full border-4 bg-gray-100" style={style}></div>
+    </div>
+  );
+};
+
+const FullBlock = ({
+  style,
+  children,
+}: {
+  style?: CSSProperties;
+  children: JSX.Element;
+}) => {
+  return (
+    <div className="relative h-32 border-4" style={style}>
+      {children}
     </div>
   );
 };
@@ -220,7 +235,6 @@ function App() {
 
   return (
     <div className="flex justify-center relative">
-      <BackgroundBlobs />
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 opacity-90">
         <FullImg />
 
@@ -268,7 +282,9 @@ function App() {
           <SqImg />
         </div>
 
-        <FullImg />
+        <FullBlock>
+          <BackgroundBlobView />
+        </FullBlock>
 
         <div className="grid grid-cols-[auto_1fr] gap-x-2">
           <SqImg />

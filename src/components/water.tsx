@@ -2,15 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Pair = [number, number];
 
-const colorFill = ["fill-emerald-200", "fill-emerald-300", "fill-emerald-400"];
+const colorFill = ["fill-teal-200", "fill-teal-400"];
 
 function Triangle({ path }: { path: Pair[] }) {
   const rand = useMemo(() => Math.floor(Math.random() * colorFill.length), []);
   const flip = useMemo(() => Math.random() < 0.6, []);
-  const pulse = flip ? "animate-pulse" : "";
+  // const pulse = flip ? "animate-pulse" : "";
   return (
     <path
-      className={`${colorFill[rand]} ${pulse}`}
+      className={`${colorFill[rand]}`}
       d={`M ${path[0].join(" ")} L ${path[1].join(" ")} L ${path[2].join(" ")} Z`}
     />
   );
