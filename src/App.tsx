@@ -245,7 +245,9 @@ function App() {
   return (
     <div className="flex justify-center relative">
       <div className="relative z-5 max-w-150 grow min-w-0 flex flex-col p-4 bg-white gap-y-8 opacity-90">
-        <FullImg />
+        <FullBlock>
+          <div>Maze here</div>
+        </FullBlock>
 
         <div className="grid grid-rows-[auto_1fr] sm:grid-cols-[auto_1fr] gap-x-2">
           <div className="flex justify-center">

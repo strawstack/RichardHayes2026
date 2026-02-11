@@ -7,6 +7,7 @@ import { Fiber } from "./routes/Fiber";
 import { Circles } from "./routes/Circles";
 import { Shader } from "./routes/Shader";
 import { Card } from "./routes/Card";
+import { MazeRoute } from "./routes/MazeRoute";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="shader" element={<Shader />} />
         <Route path="fiber" element={<Fiber />} />
         <Route path="card" element={<Card />} />
+        <Route path="maze" element={<MazeRoute />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
