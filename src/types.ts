@@ -55,7 +55,7 @@ export type Node = {
   };
 };
 
-type Edge = {
+export type Edge = {
   id: Eid;
   pos: Point;
   size: Size;

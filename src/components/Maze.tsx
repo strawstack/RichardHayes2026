@@ -7,6 +7,7 @@ import {
   type Point,
   type Node,
   type Size,
+  type Edge,
 } from "../types";
 
 const even = (r: number) => r % 2 === 0;
@@ -74,7 +75,35 @@ function generateMaze({
   const COLS = 2 * pCols + 3; // 3 = 2 nodes and 1 edge contained in minSize
   const ROWS = 2 * pRows + 3;
 
-  const graph: Node[] = Array(ROWS)
+  const inBounds = ({ x, y }: Point): Point | undefined => {
+    return y >= 0 && y < ROWS && x >= 0 && x < COLS ? { x, y } : undefined;
+  };
+
+  const nodeKeyOrUndef = (p: Point | undefined) => {
+    return p ? nodeKey(p) : undefined;
+  };
+
+  const nodeKey = (p: Point) => {
+    return `${p.x}:${p.y}`;
+  };
+
+  type Rooms = { first: Nid; second: Nid };
+  function getAdjRooms(kind: Kind, { x, y }: Point): Rooms | undefined {
+    if (kind !== Kind.Edge) return undefined;
+    if (even(y)) {
+      return {
+        first: nodeKey({ x: x - 1, y: y }),
+        second: nodeKey({ x: x + 1, y: y }),
+      };
+    } else {
+      return {
+        first: nodeKey({ x: x, y: y - 1 }),
+        second: nodeKey({ x: x, y: y + 1 }),
+      };
+    }
+  }
+
+  const graph: (Node | Edge)[] = Array(ROWS)
     .fill(null)
     .map((_, y) =>
       Array(COLS)
@@ -94,9 +123,12 @@ function generateMaze({
             EDGE_SIZE,
           );
 
+          const kind = even(y) && even(x) ? Kind.Node : Kind.Edge;
+          const roomsForEdge = getAdjRooms(kind, { x, y });
+
           return {
             id: `${y}:${x}` as Nid,
-            kind: even(y) && even(x) ? Kind.Node : Kind.Edge,
+            kind,
             pos: {
               x: PAD_X + left,
               y: PAD_Y + top,
@@ -106,11 +138,13 @@ function generateMaze({
               height: CELL_H,
             },
             edges: {
-              top: undefined,
-              right: undefined,
-              down: undefined,
-              left: undefined,
+              top: nodeKeyOrUndef(inBounds({ x: x, y: y - 1 })),
+              right: nodeKeyOrUndef(inBounds({ x: x + 1, y: y })),
+              down: nodeKeyOrUndef(inBounds({ x: x, y: y + 1 })),
+              left: nodeKeyOrUndef(inBounds({ x: x - 1, y: y })),
             },
+            from: roomsForEdge?.first,
+            to: roomsForEdge?.second,
           };
         }),
     )
@@ -153,7 +187,7 @@ export function Maze({ id }: { id: number }) {
   }, []);
 
   function onClick() {
-    setMaze(prims(maze));
+    if (maze) setMaze(prims(maze));
   }
 
   useEffect(() => {
