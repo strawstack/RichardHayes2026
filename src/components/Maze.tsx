@@ -93,12 +93,14 @@ function generateMaze({
   const pRows = Math.floor((mazeHeight - minSize) / (NODE_SIZE + EDGE_SIZE));
 
   // The real padding value including space left over after rooms are added
-  const PAD_X = (width - pCols * (NODE_SIZE + EDGE_SIZE) + NODE_SIZE) / 2;
-  const PAD_Y = (height - pRows * (NODE_SIZE + EDGE_SIZE) + NODE_SIZE) / 2;
+  const PAD_X =
+    (mazeWidth - pCols * (NODE_SIZE + EDGE_SIZE) - minSize) / 2 + PAD;
+  const PAD_Y =
+    (mazeHeight - pRows * (NODE_SIZE + EDGE_SIZE) - minSize) / 2 + PAD;
 
   // Nodes and edges count as rows
-  const COLS = 2 * pCols + 1;
-  const ROWS = 2 * pRows + 1;
+  const COLS = 2 * pCols + 3; // 3 = 2 nodes and 1 edge contained in minSize
+  const ROWS = 2 * pRows + 3;
 
   const graph: Node[] = Array(ROWS)
     .fill(null)
