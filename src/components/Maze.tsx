@@ -1,41 +1,13 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
-
-type Point = { x: number; y: number };
-type Size = { width: number; height: number };
-type nid = string;
-type eid = string;
-
-enum Kind {
-  Node = "Node",
-  Edge = "Edge",
-}
-
-type Node = {
-  id: nid;
-  pos: Point;
-  size: Size;
-  kind: Kind;
-  edges?: {
-    top: eid | undefined;
-    right: eid | undefined;
-    down: eid | undefined;
-    left: eid | undefined;
-  };
-};
-
-type Edge = {
-  id: eid;
-  pos: Point;
-  size: Size;
-  kind: Kind;
-  from?: nid;
-  to?: nid;
-};
-
-type Maze = {
-  nodes: { [key: nid]: Node };
-  edges: { [key: eid]: Edge };
-};
+import { useEffect, useRef, useState } from "react";
+import { prims } from "../prims";
+import {
+  Kind,
+  type Maze,
+  type Nid,
+  type Point,
+  type Node,
+  type Size,
+} from "../types";
 
 const even = (r: number) => r % 2 === 0;
 
@@ -123,7 +95,7 @@ function generateMaze({
           );
 
           return {
-            id: `${y}:${x}` as nid,
+            id: `${y}:${x}` as Nid,
             kind: even(y) && even(x) ? Kind.Node : Kind.Edge,
             pos: {
               x: PAD_X + left,
@@ -144,6 +116,8 @@ function generateMaze({
     )
     .flat();
   return {
+    rows: ROWS,
+    cols: COLS,
     nodes: graph
       .filter((n) => n.kind === Kind.Node)
       .reduce(
@@ -151,7 +125,7 @@ function generateMaze({
           a[c.id] = c;
           return a;
         },
-        {} as { [key: nid]: Node },
+        {} as { [key: Nid]: Node },
       ),
     edges: graph
       .filter((n) => n.kind === Kind.Edge)
@@ -160,28 +134,45 @@ function generateMaze({
           a[c.id] = c;
           return a;
         },
-        {} as { [key: nid]: Node },
+        {} as { [key: Nid]: Node },
       ),
   };
 }
 
-const first = (id: number) => id === 0;
-
 export function Maze({ id }: { id: number }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [maze, setMaze] = useState<Maze | null>(null);
+  const nodeRef = useRef<{ [key: string]: SVGRectElement | null }>({});
+
   useEffect(() => {
     if (svgRef.current) {
       const { width, height } = svgRef.current.getBoundingClientRect();
-      setMaze(generateMaze({ width, height }));
+      const m = generateMaze({ width, height });
+      setMaze(m);
     }
   }, []);
+
+  function onClick() {
+    setMaze(prims(maze));
+  }
+
+  useEffect(() => {
+    if (id === 0) window.addEventListener("click", onClick);
+    return () => {
+      if (id === 0) {
+        window.removeEventListener("click", onClick);
+      }
+    };
+  }, [maze]);
 
   const nodes = maze ? (
     Object.values(maze.nodes).map(({ id, pos, size }, i) => {
       return (
         <rect
           key={i}
+          ref={(e) => {
+            nodeRef.current[id] = e;
+          }}
           x={pos.x}
           y={pos.y}
           width={size.width}
@@ -199,6 +190,9 @@ export function Maze({ id }: { id: number }) {
       return (
         <rect
           key={i}
+          ref={(e) => {
+            nodeRef.current[id] = e;
+          }}
           x={pos.x}
           y={pos.y}
           width={size.width}
